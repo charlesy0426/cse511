@@ -85,25 +85,25 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     stack = util.Stack()
-		pathToGoal = []
-		expandedSates = []
+    pathToGoal = []
+    expandedSates = []
     startState = (problem.getStartState(),'',0)
-		if problem.isGoalState(startState[0]):
-			return pathToGoal
-    stack.push((startState3, pathToGoal)) 
+    if problem.isGoalState(startState[0]):
+	return pathToGoal
+    stack.push((startState, pathToGoal)) 
     while stack.isEmpty() == False:
         currentState = stack.pop()
         if problem.isGoalState(currentState[0][0]):
             break
         else:
-					if currentState[0] not in expandedSates:
-						expandedSates.append(currentState[0])
-					else:
-						continue
-					for successor in problem.getSuccessors(currentState[0][0]):
-						pathToSucc = path.append(successor[1])
-						stack.push((successor, pathToSucc))
-		return currentState[1]
+	    if currentState[0] not in expandedSates:
+		expandedSates.append(currentState[0])
+	    else:
+		continue
+	    for successor in problem.getSuccessors(currentState[0][0]):
+		pathToSucc = currentState[1].append(successor[1])
+		stack.push((successor, pathToSucc))
+    return currentState[1]
 
     util.raiseNotDefined()
 
@@ -113,27 +113,26 @@ def breadthFirstSearch(problem):
     [2nd Edition: p 73, 3rd Edition: p 82]
     """
     "*** YOUR CODE HERE ***"
-		queue = util.Queue()
-		pathToGoal = []
-		expandedSates = []
+    queue = util.Queue()
+    pathToGoal = []
+    expandedSates = []
     startState = (problem.getStartState(),'',0)
-		if problem.isGoalState(startState[0]):
-			return pathToGoal
-    queue.push((startState3, pathToGoal)) 
-    while queue.isEmpty() == False:
+    if problem.isGoalState(startState[0]):
+	return pathToGoal
+    queue.push((startState, pathToGoal)) 
+    while stack.isEmpty() == False:
         currentState = queue.pop()
         if problem.isGoalState(currentState[0][0]):
             break
         else:
-					if currentState[0] not in expandedSates:
-						expandedSates.append(currentState[0])
-					else:
-						continue
-					for successor in problem.getSuccessors(currentState[0][0]):
-						pathToSucc = path.append(successor[1])
-						queue.push((successor, pathToSucc))
-		return currentState[1]
-		
+	    if currentState[0] not in expandedSates:
+		expandedSates.append(currentState[0])
+	    else:
+		continue
+	    for successor in problem.getSuccessors(currentState[0][0]):
+		pathToSucc = currentState[1].append(successor[1])
+		queue.push((successor, pathToSucc))
+    return currentState[1]
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
