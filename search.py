@@ -167,7 +167,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
-    pqueueFn = util.PriorityQueueWithFunction(lambda state : state[3] + heuristic(state[0][0], problem))
+    pqueueFn = util.PriorityQueueWithFunction(lambda state : state[2] + heuristic(state[0][0], problem))
     expandedStates = set()
     startState = (problem.getStartState(), None, 0)
 
