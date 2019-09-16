@@ -104,7 +104,6 @@ def depthFirstSearch(problem):
     
     return currentState[1]
 
-
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
@@ -133,7 +132,6 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
-    "*** YOUR CODE HERE ***"
     pqueue = util.PriorityQueue()
     expandedStates = set()
     startState = (problem.getStartState(), None, 0)
@@ -155,7 +153,6 @@ def uniformCostSearch(problem):
             pqueue.push((successor, pathToCurrent), costToCurrent)
     
     return currentState[1]
-    util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
@@ -166,7 +163,6 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
-    "*** YOUR CODE HERE ***"
     pqueueFn = util.PriorityQueueWithFunction(lambda state : state[2] + heuristic(state[0][0], problem))
     expandedStates = set()
     startState = (problem.getStartState(), None, 0)
@@ -188,7 +184,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             pqueueFn.push((successor, pathToCurrent, costToCurrent))
     
     return currentState[1]
-    util.raiseNotDefined()
 
 
 # Abbreviations
