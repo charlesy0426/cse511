@@ -141,7 +141,7 @@ def uniformCostSearch(problem):
     if problem.isGoalState(startState[0]):
       return []
     
-    pqueue.push((startState, []))
+    pqueue.push((startState, []), 0)
     while not pqueue.isEmpty():
       currentState = pqueue.pop()
       if problem.isGoalState(currentState[0][0]):
@@ -150,9 +150,9 @@ def uniformCostSearch(problem):
         if currentState[0][0] not in expandedStates:
           expandedStates.add(currentState[0][0])
           for successor in problem.getSuccessors(currentState[0][0]):
-            pathToGoal = currentState[1] + [successor[1]]
-			costToGoal = problem.getCostOfActions(pathToGoal)
-            pqueue.push((successor, pathToGoal), costToGoal)
+            pathToCurrent = currentState[1] + [successor[1]]
+	    costToCurrent = problem.getCostOfActions(pathToCurrent)
+            pqueue.push((successor, pathToCurrent), costToCurrent)
     
     return currentState[1]
     util.raiseNotDefined()
@@ -167,6 +167,27 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
+    pqueueFn = util.PriorityQueueWithFunction(lambda state : state[3] + heuristic(state[0][0], problem))
+    expandedStates = set()
+    startState = (problem.getStartState(), None, 0)
+
+    if problem.isGoalState(startState[0]):
+      return []
+    
+    pqueueFn.push((startState, [], 0))
+    while not pqueueFn.isEmpty():
+      currentState = pqueueFn.pop()
+      if problem.isGoalState(currentState[0][0]):
+        break
+      else:
+        if currentState[0][0] not in expandedStates:
+          expandedStates.add(currentState[0][0])
+          for successor in problem.getSuccessors(currentState[0][0]):
+            pathToCurrent = currentState[1] + [successor[1]]
+	    costToCurrent = problem.getCostOfActions(pathToCurrent)
+            pqueueFn.push((successor, pathToCurrent, costToCurrent))
+    
+    return currentState[1]
     util.raiseNotDefined()
 
 
