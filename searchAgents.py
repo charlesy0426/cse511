@@ -456,7 +456,7 @@ def foodHeuristic(state, problem):
     foodList = foodGrid.asList()
     postionToFoodDistance = []
 
-    if(problem.isGoalState(state)):
+    if(len(foodList) == 0):
         return 0
     
     for foodPosition in foodList:
