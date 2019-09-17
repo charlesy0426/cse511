@@ -453,15 +453,16 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
     foodList = foodGrid.asList()
     postionToFoodDistance = []
+
     if(problem.isGoalState(state)):
         return 0
+    
     for foodPosition in foodList:
-        postionToFoodDistance.append(mazeDistance(position, foodPosition, state))
+        postionToFoodDistance += [mazeDistance(position, foodPosition, problem.startingGameState)]
+    
     return max(postionToFoodDistance)
-    return 0
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -489,7 +490,6 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        return search.breadthFirstSearch(problem)
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -526,8 +526,6 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        foodList = self.food.asList()
-        return (x,y) in foodList
         util.raiseNotDefined()
 
 ##################
