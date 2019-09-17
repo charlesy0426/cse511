@@ -526,6 +526,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        return search.breadthFirstSearch(problem)
         util.raiseNotDefined()
 
 ##################
@@ -546,6 +547,8 @@ class ApproximateSearchAgent(Agent):
         Directions.{North, South, East, West, Stop}
         """
         "*** YOUR CODE HERE ***"
+        foodList = self.food.asList()
+        return (x,y) in foodList
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
