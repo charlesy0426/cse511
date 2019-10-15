@@ -145,16 +145,15 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns the total number of agents in the game
     """
     def minimax(gameState, depth, agent) :
-      if gameState.isWin() or gameState.isLose() or depth == self.depth :
+      if gameState.isWin() or gameState.isLose() :
         return self.evaluationFunction(gameState)
       
-      if agent % gameState.getNumAgents() == 0 :
-        if agent >= gameState.getNumAgents() :
-          agent -= gameState.getNumAgents() 
+      agent %= gameState.getNumAgents()
+      if agent == gameState.getNumAgents()-1 and depth == self.depth :
+        return self.evaluationFunction(gameState)
+      if agent == 0 :
         return max(minimax(gameState.generateSuccessor(agent, action), depth + 1, agent + 1) for action in gameState.getLegalActions(agent))
       else :
-        if agent >= gameState.getNumAgents() :
-          agent -= gameState.getNumAgents()
         return min(minimax(gameState.generateSuccessor(agent, action), depth, agent + 1) for action in gameState.getLegalActions(agent))
 
     return max(gameState.getLegalActions(0), key = lambda action : minimax(gameState.generateSuccessor(0, action), 0, 1))
