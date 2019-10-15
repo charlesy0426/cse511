@@ -353,8 +353,17 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    position = state[0]
+    cornersToGo = state[1]
+
+    if len(cornersToGo) == 0:
+        return 0
+
+    heuristic = []
+    for corner in cornersToGo:
+        heuristic += [abs(corner[0]-position[0]) + abs(corner[1]-position[1])]
+
+    return max(heuristic)
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -444,8 +453,16 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    foodList = foodGrid.asList()
+    postionToFoodDistance = []
+
+    if(len(foodList) == 0):
+        return 0
+    
+    for foodPosition in foodList:
+        postionToFoodDistance += [mazeDistance(position, foodPosition, problem.startingGameState)]
+    
+    return max(postionToFoodDistance)
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -473,6 +490,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        return search.breadthFirstSearch(problem)
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -509,6 +527,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        foodList = self.food.asList()
+        return (x,y) in foodList
         util.raiseNotDefined()
 
 ##################
@@ -529,6 +549,7 @@ class ApproximateSearchAgent(Agent):
         Directions.{North, South, East, West, Stop}
         """
         "*** YOUR CODE HERE ***"
+        
         util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
