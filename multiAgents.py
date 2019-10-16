@@ -72,20 +72,23 @@ class ReflexAgent(Agent):
       dToGhost = manhattanDistance(newPos, ghost.getPosition())
       if ghost.scaredTimer > 0:
         if dToGhost > 0 :
-          newScore -= 0.5/(dToGhost)
+          newScore -= 5/(dToGhost*dToGhost)
         else :
-          newScore -= 1
+          newScore -= 10
       else :
         if dToGhost > 0 :
-          newScore -= 1/(dToGhost)
+          newScore -= 10/(dToGhost*dToGhost)
         else :
-          newScore -= len(newGhostStates)
+          newScore -= 100
 
     nearestFood = 1000000
     for food in newFood.asList() :
       if manhattanDistance(newPos, food) < nearestFood:
         nearestFood = manhattanDistance(newPos, food)
-    newScore += 4/nearestFood
+    newScore += 10/nearestFood
+
+    if action == "STOP":
+      newScore -= 1
 
     return newScore
 
@@ -234,8 +237,36 @@ def betterEvaluationFunction(currentGameState):
 
     DESCRIPTION: <write something here so we know what you did>
   """
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  pos = currentGameState.getPacmanPosition()
+  foods = currentGameState.getFood()
+  ghosts = currentGameState.getGhostStates()
+  score = currentGameState.getScore()
+
+  for ghost in ghosts :
+    dToGhost = manhattanDistance(pos, ghost.getPosition())
+    if ghost.scaredTimer > 0:
+      if dToGhost > 0 :
+        score -= 5/(dToGhost*dToGhost)
+      else :
+        score -= 10
+    else :
+      if dToGhost > 0 :
+        score -= 10/(dToGhost*dToGhost)
+      else :
+        score -= 100
+
+  nearestFood = 1000000
+  for food in foods.asList() :
+    if manhattanDistance(pos, food) < nearestFood:
+      nearestFood = manhattanDistance(pos, food)
+  score += 10/nearestFood
+
+  return score
+
+
+
+
+
 
 # Abbreviation
 better = betterEvaluationFunction
