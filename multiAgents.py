@@ -170,34 +170,48 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     """
       Returns the minimax action using self.depth and self.evaluationFunction
     """
-    alpha = float("inf")
-    beta = float("-inf")
+    alpha = float("-inf")
+    beta = float("inf")
     def alphaBeta(gameState, depth, agent, alpha, beta) :
-      if gameState.isWin() or gameState.isLose() or depth == self.depth :
+      if gameState.isWin() or gameState.isLose() :
         return self.evaluationFunction(gameState) 
+      agent %= gameState.getNumAgents()
+      if agent == gameState.getNumAgents() - 1 and depth == self.depth :
+        return self.evaluationFunction(gameState)
       
-      if agent % gameState.getNumAgents() == 0 :
-        if agent >= gameState.getNumAgents() :
-          agent -= gameState.getNumAgents() 
-        val = float("-inf")
-        for action in gameState.getLegalActions(agent) :
-          val =  max(val, alphaBeta(gameState.generateSuccessor(agent, action), 
-                          depth + 1, agent + 1, alpha, beta))
-          if val >= beta : return val
-          alpha = max (val, alpha)
+      if agent == 0 :
+        val = maxVal(gameState, depth, agent, alpha, beta)
         return val
       else :
-        if agent >= gameState.getNumAgents() :
-          agent -= gameState.getNumAgents() 
-        val = float("inf")
-        for action in gameState.getLegalActions(agent) :
-          val =  min(val, alphaBeta(gameState.generateSuccessor(agent, action), 
-                          depth + 1, agent + 1, alpha, beta))
-          if val <= alpha : return val
-          beta = min (val, beta)
+        val = minVal(gameState, depth, agent, alpha, beta)
         return val
-    return max(gameState.getLegalActions(0), key = lambda action : alphaBeta(gameState.generateSuccessor(0, action), 0, 1, alpha, beta))
 
+    def maxVal(gameState, depth, agent, alpha, beta) :
+      val = float("-inf")
+      for action in gameState.getLegalActions(agent) :
+        val =  max(val, alphaBeta(gameState.generateSuccessor(agent, action), depth + 1, agent + 1, alpha, beta))
+        if val >= beta : return val
+        alpha = max (val, alpha)
+      return val
+
+    def minVal(gameState, depth, agent, alpha, beta) :
+      val = float("inf")
+      for action in gameState.getLegalActions(agent) :
+        val = min(val, alphaBeta(gameState.generateSuccessor(agent, action), depth, agent + 1, alpha, beta))
+        if val <= alpha : return val
+        beta = min (val, beta)
+      return val
+
+    val = float("-inf")
+    action = Directions.WEST
+    for nxtAction in gameState.getLegalActions(0) :
+      nxtVal = alphaBeta(gameState.generateSuccessor(0, nxtAction), 0, 1, alpha, beta)
+      if nxtVal >= val :
+        val = nxtVal
+        action = nxtAction
+      if val >= beta : return action
+      alpha = max(val, alpha)
+    return action
 class ExpectimaxAgent(MultiAgentSearchAgent):
   """
     Your expectimax agent (question 4)
